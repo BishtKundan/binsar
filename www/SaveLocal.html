@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Submit Order</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="bs/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="bs/css/bootstrap-theme.min.css" />
+	<link rel="stylesheet" href="css/jquery-ui.css">
+
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
+	<script  type="text/javascript" src="bs/js/bootstrap.min.js"></script>
+	<script  type="text/javascript" src="js/db.js"></script>
+	<script type="text/javascript" src="cordova.js"></script>
+
+	<script>
+	  $( function() {
+		$( "#oDate").datepicker();
+	  } );
+	</script>
+</head>
+
+<body>
+	<div style="width:100%; height:60px;text-align:center;font-size:20px; color:black;background-color:#92D5F6; vertical-align:middle">
+		<span>Order Submission<span>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-4 text-left"><a href="main.html"><img class="img-circle" src="img\home.png"/></a></div>
+	</div>
+ 
+ 
+ <div class="container" >
+<form id="form"> 
+  <input type="hidden" name="MODULE" value="ORDER" />
+
+<div class="form-group">
+  <label for="custid">Customers</label>
+  <select class="form-control" id="custid" name="custid">
+    <option value="1">Cust 1</option>
+    <option value="2">Cust 2</option>
+    <option value="3">Cust 3</option>
+    <option value="4">Cust 4</option>
+  </select>
+</div>
+
+    <div class="form-group">
+      <label for="odtl">Order Details:</label>
+	  <textarea class="form-control" rows="5" placeholder="Enter Order Details" id="odtl" name="odtl"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="oDate">Order Date:</label>
+	  <p><input type="text"  name="oDate" size="10" id="oDate"></p>
+
+	</div>
+	<hr/>
+   <button type="button" id="send" class="btn btn-default">Save</button>&nbsp;<span id="lblMsg" name="lblMsg"></span>
+    
+	<!-- <input type='text' id='note' >-->
+	
+   <button onclick='return insertData()' id='submit'>Save Local</button><br>
+   <ul id='list'></ul>
+  </form>
+ </div>
+ 
+ <script>
+	/// posting form now
+    $(document).ready(function(){
+		// click on button submit
+        $("#send").on('click', function(){
+				
+				///---------
+				// Validate 
+				alert('here');
+				var comment = $('#odtl').val();
+				if (comment == '') {
+					
+					$("#lblMsg").empty().append('Please enter order details');
+					return false;
+				}
+				
+				if ($("input[name=oDate]").val() == '')
+				{
+					$("#lblMsg").empty().append('Please select order date');
+					return false;
+				}
+				///----------
+		
+            // send ajax
+				$.ajax({
+					cache: false,
+					url: 'http://localhost/weblisten/default.aspx',
+					type : "POST",
+					data: $('form').serialize(),
+					datatype: 'json',
+					success: function(response) {
+					console.log(response);
+					//alert(response);
+					//$("#lblMsg").text(response);
+
+				//---------------
+					var xml = response,
+					xmlDoc = $.parseXML( xml ),
+					$xml = $( xmlDoc ),
+					$title = $xml.find("MSG");
+
+					$("#form")[0].reset();
+					$("#lblMsg").empty().append($title.text());
+					//--------------
+					}
+				});
+        });
+    }
+	);
+	/////----------------------------
+		
+	</script>
+ 
+</body>
+</html>
+

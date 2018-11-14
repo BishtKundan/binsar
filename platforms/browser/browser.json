@@ -1,0 +1,32 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.binsar.kundan"
+    },
+    "cordova-plugin-customconfigparameters": {
+      "PACKAGE_NAME": "com.binsar.kundan"
+    }
+  },
+  "dependent_plugins": {},
+  "modules": [
+    {
+      "file": "plugins/cordova-plugin-customconfigparameters/www/customconfigparameters.js",
+      "id": "cordova-plugin-customconfigparameters.CustomConfigParameters",
+      "pluginId": "cordova-plugin-customconfigparameters",
+      "clobbers": [
+        "CustomConfigParameters"
+      ]
+    }
+  ],
+  "plugin_metadata": {
+    "cordova-plugin-whitelist": "1.3.3",
+    "cordova-plugin-customconfigparameters": "3.0.0"
+  }
+}

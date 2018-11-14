@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"> 
+    <meta http-equiv="X-UD-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="bs/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="bs/css/bootstrap-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/index.css" />
+	<link rel="stylesheet" type="text/css" href="css/login.css" />
+	
+	<script  type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script  type="text/javascript" src="bs/js/bootstrap.min.js"></script>
+	
+	<title>Login</title>
+</head>
+<body>
+<div class="wrapper">
+
+    <form class="form-signin" id="form">       
+	<input type="hidden" name="MODULE" value="LOGIN" />
+	<div style="text-align:center"><img src="img\login1.png"></div>
+      <input type="text" class="form-control" id="username" name="username" placeholder="User Name" required="" autofocus="" />
+      <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password" required=""/>      
+      <button type="button" id="send" name="send" class="btn btn-lg btn-primary btn-block">Login</button> 
+	  <span id="lblMsg" name="lblMsg"></span>
+	  <div style="text-align:right"><a href="reg.html">Register</a></div>
+
+	  </form>
+	<br /><br /><br /><br /><br /><br /><br /><br /><br />
+	<div>
+	 *** <a href="main.html">Main</a> ------ <a href="SaveLocal.html">Save Local</a>
+	</div>
+	
+  </div>
+
+	<script>
+	
+	/// posting form now
+    $(document).ready(function(){
+
+		// click on button submit
+        $("#send").on('click', function(){
+				
+				///---------
+				// Validate 
+				if ($("input[name=username]").val() == '')
+				{
+					$("#lblMsg").empty().append('Please enter username');
+					return false;
+				}
+				else if ($("input[name=pwd]").val() == '')
+				{
+					$("#lblMsg").empty().append('Please enter password');
+					return false;
+				}
+				///----------
+		
+            // send ajax
+				$.ajax({
+					cache: false,
+					url: 'http://ec2-13-233-170-89.ap-south-1.compute.amazonaws.com/weblisten/default.aspx',
+					type : "POST",
+					data: $('form').serialize(),
+					datatype: 'json',
+					success: function(response) {
+					console.log(response);
+					//alert(response);
+					//$("#lblMsg").text(response);
+
+				//---------------
+					var xml = response,
+					xmlDoc = $.parseXML( xml ),
+					$xml = $( xmlDoc ),
+					$title = $xml.find("USERS");
+					//alert(xml);
+					if ($title.text() == '0' || $title.text() == '')
+					{
+						$("#lblMsg").empty().append('Invalid User');
+						$("#form")[0].reset();   
+						sessionStorage.removeItem('username');
+					}
+					else
+					{
+						sessionStorage.setItem('username', $("input[name=username]").val());
+						sessionStorage.setItem('appurl','http://ec2-13-233-170-89.ap-south-1.compute.amazonaws.com/weblisten/default.aspx');
+						
+						window.location.href = "main.html";
+					}
+					
+					//--------------
+					}
+				});
+        });
+    }
+	);
+	/////----------------------------
+		
+		function readCOnfigValue() {
+		
+		var paramkeyArray=["apiurl","apikey"];
+    CustomConfigParameters.get(function(configData){
+        console.log(configData);
+        console.log(configData.apiurl);
+        console.log(configData.apiusername);
+        console.log(configData.apipassword);
+    },function(err){
+      console.log(err);
+    },paramkeyArray);
+		
+		
+		
+		}
+	</script>
+
+</body>
+</html>

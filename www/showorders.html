@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="bs/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="bs/css/bootstrap-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/index.css" />
+	<title></title>
+</head>
+<body>
+
+	<div style="width:100%; height:60px;text-align:center;font-size:20px; color:black;background-color:#92D5F6; vertical-align:middle">
+		<span>List Orders<span>
+	</div>
+	
+	<div class="row">
+		<div class="col-sm-4 text-left"><a href="main.html"><img class="img-circle" src="img\home.png"/></a> </div>
+	</div>
+	
+  <form id="form"> 
+  <input type="hidden" name="MODULE" value="REPORT" />
+    </div>
+    <button type="button" id="send" class="btn btn-default">Show orders</button>
+	<hr/>  
+		<span id="lblMsg" name="lblMsg"></span>
+  </form>
+</div> 
+	<script  type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script  type="text/javascript" src="bs/js/bootstrap.min.js"></script>
+
+	<script>
+	/// posting form now
+    $(document).ready(function(){
+		// click on button submit
+        $("#send").on('click', function(){
+            // send ajax
+				$.ajax({
+					cache: false,
+					url: sessionStorage.getItem("appurl"),		
+					type : "POST",
+					data: $('form').serialize(),
+					datatype: 'json',
+					success: function(response) {
+					console.log(response);
+					//alert(response);
+					//$("#lblMsg").text(response);
+
+				//---------------
+					var xml = response,
+					xmlDoc = $.parseXML( xml ),
+					$xml = $( xmlDoc ),
+					$title = $xml.find("ORDERS");
+
+					// Append "RSS Title" to #someElement
+					//$( "#lblMsg" ).append( $title.text() );
+					
+					
+					var htmlTxt = "<table border='1' width='100%'><tr><td><strong>Order ID</strong></td><td><strong>CUST ID</strong></td><td><strong>Order Details</strong></td><td><strong>Order Date</strong></td></tr>";
+					// data is a xml document now, so we query it...
+					$(xml)
+					  // and search for all <field> elements
+					  .find('ORDERS')
+					  // now we can play with each <field>
+					  .each(function(index, element){
+						// as example we query & store the field
+						var field = $(element)
+						// get the values we want
+						
+						var orderid	= field.find('orderid').text()
+						var cust_id	 = field.find('cust_id').text()
+						var order_detail = field.find('order_detail').text()	
+						var order_date	= field.find('order_date').text()
+						var order_status = field.find('order_status').text()
+						var order_date = field.find('order_date').text()
+						
+						htmlTxt = htmlTxt + '<tr><td>' + orderid + '</td><td>' + cust_id + '</td><td>' + order_detail + '</td><td>' + order_date + '</td></tr>';
+						 //alert('<tr><td>' + orderid + '</td><td>' + cust_id + '</td><td>' + order_detail + '</td></tr>');
+						//var label = field.find('orderid').text()
+						//var value = field.find('order_detail').text()
+						// and append some html in the <dl> element we stored previously
+						
+						;
+					  })
+					  var htmlTxt = htmlTxt + "</table>";
+					  //$("#lblMsg").val(null);
+					  //$( "#lblMsg" ).append( htmlTxt );
+					  $("#lblMsg").empty().append(htmlTxt);
+					;
+					//--------------
+					}
+				});
+        });
+    }
+	);
+	/////----------------------------
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="bs/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="bs/css/bootstrap-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/index.css" />
+	<title></title>
+</head>
+<body>
+	<div style="width:100%; height:60px;text-align:center;font-size:20px; color:black;background-color:#92D5F6; vertical-align:middle">
+		<span>Registration<span>
+	</div>
+	
+	<div class="row">
+		<div class="col-sm-4 text-left"><a href="index.html"><img class="img-circle" src="img\back.png"/></a></div>
+	</div>
+	
+	<h4>Registration details</h4>
+	<br />
+  <form id="form"> 
+  <input type="hidden" name="MODULE" value="REG" />
+    <div class="form-group">
+      <input type="email" class="form-control" id="email" placeholder="Please enter user name" name="email" aria-describedby="emailHelp">
+    </div>
+    <div class="form-group">
+      <input type="password" class="form-control" id="pwd" placeholder="Please enter password" name="pwd" >
+    </div>
+
+	<button type="button" id="send" name="send" class="btn btn-default">Register</button> 
+	<br/>
+	<span id="lblMsg" name="lblMsg"></span>
+    <!-- <button type="button" id="send" class="btn btn-default">Submit</button>&nbsp;<span id="lblMsg" name="lblMsg"></span>-->
+  </form>
+</div> 
+	<script  type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script  type="text/javascript" src="bs/js/bootstrap.min.js"></script>
+
+	<script>
+	/// posting form now
+    $(document).ready(function(){
+		// click on button submit
+        $("#send").on('click', function(){
+				
+				///---------
+				// Validate 
+				
+				if ($("input[name=email]").val() == '')
+				{
+					$("#lblMsg").empty().append('Please enter a user name');
+					return false;
+				}
+				else if ($("input[name=pwd]").val() == '')
+				{
+					$("#lblMsg").empty().append('Please enter a password');
+					return false;
+				}
+				///----------
+		
+            // send ajax
+				$.ajax({
+					cache: false,
+					url: 'http://ec2-13-233-170-89.ap-south-1.compute.amazonaws.com/weblisten/default.aspx',	
+					type : "POST",
+					data: $('form').serialize(),
+					datatype: 'json',
+					success: function(response) {
+					console.log(response);
+					//alert(response);
+					//$("#lblMsg").text(response);
+
+				//---------------
+					var xml = response,
+					xmlDoc = $.parseXML( xml ),
+					$xml = $( xmlDoc ),
+					$title = $xml.find("MSG");
+
+					$("#form")[0].reset();
+					$("#lblMsg").empty().append($title.text());
+					//--------------
+					}
+				});
+        });
+    }
+	);
+	/////----------------------------
+		
+	</script>
+</body>
+</html>

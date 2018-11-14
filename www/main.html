@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UD-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="bs/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="bs/css/bootstrap-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/index.css" />
+	<title>Hi</title>
+	
+	<script  type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script  type="text/javascript" src="bs/js/bootstrap.min.js"></script>
+	
+</head>
+<body>
+
+	<div style="width:100%; height:50px;text-align:center;font-size:25px; color:white;background-color:blue; vertical-align:middle; font-family:calibre;">
+		<span>Options <span>
+	</div>
+	
+	<div style="width:100%; height:50px;text-align:center;font-size:25px; color:red;background-color:green; vertical-align:middle; font-family:calibre;">
+		<div class="col-sm-4 text-left"><a href="main.html"><img class="img-circle" src="img\home.png"/></a>
+		&nbsp;<a id="logout" href="#"><img class="img-circle" src="img\quit.png"/></a></div>
+	</div>
+	<div class="container" >
+	  <div class="row" style="text-align:center;">
+	  <div class="col-sm-4">
+		  <a href="SubmitOrder.html" ><img class="img-circle" src="img\C.png"/</a>
+		  <h5>Submit Order</h5>
+		</div>
+		<div class="col-sm-4">
+		  <a href="showorders.html" ><img class="img-circle" src="img\B.png"/</a>
+		  <h5>Show Orders</h5>
+		</div>
+	  </div>
+	  <hr/>
+	   <form>
+	  </form>
+	 </div>
+
+ <script type="text/javascript">
+
+	$(document).ready(function(){
+	var usrName = sessionStorage.getItem("username");
+	//alert(sessionStorage.getItem("appurl"));
+	
+		if (usrName == null)
+		{
+			window.location.href = "login.html";
+		}
+	});
+
+	function goBack() {
+		window.history.back();
+	}
+	
+	$(document).ready(function() {
+    $("#logout").on('click', function(e) {
+        
+			if (confirm('Are you sure to quit') == true)
+			{
+				var usrName = sessionStorage.removeItem("username");
+				window.location.href = "index.html";
+			}
+		});
+		
+ });
+	
+</script>
+	
+	</script>
+</body>
+</html>
